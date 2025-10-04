@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Home, FolderKanban, BarChart3, AlertTriangle, Settings, HelpCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavItem {
   icon: typeof Home;
   label: string;
   badge?: number;
-  active?: boolean;
+  path: string;
 }
 
 interface SidebarProps {
@@ -14,14 +15,16 @@ interface SidebarProps {
 
 export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems: NavItem[] = [
-    { icon: Home, label: 'Dashboard', active: true },
-    { icon: FolderKanban, label: 'Projects' },
-    { icon: BarChart3, label: 'Analytics' },
-    { icon: AlertTriangle, label: 'Issues', badge: 23 },
-    { icon: Settings, label: 'Settings' },
-    { icon: HelpCircle, label: 'Help & Support' },
+    { icon: Home, label: 'Dashboard', path: '/dashboard' },
+    { icon: FolderKanban, label: 'Projects', path: '/dashboard' },
+    { icon: BarChart3, label: 'Analytics', path: '/analytics' },
+    { icon: AlertTriangle, label: 'Issues', badge: 23, path: '/dashboard' },
+    { icon: Settings, label: 'Settings', path: '/dashboard' },
+    { icon: HelpCircle, label: 'Help & Support', path: '/dashboard' },
   ];
 
   return (
@@ -60,33 +63,37 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
 
       {/* Navigation */}
       <nav className="flex-1 py-4">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.label}
-              onClick={() => onNavigate?.(item.label)}
-              className={`w-full flex items-center gap-3 px-6 py-3 transition-all relative group ${
-                item.active
-                  ? 'text-primary bg-primary/10 font-semibold'
-                  : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
-              }`}
-            >
-              {item.active && <div className="absolute left-0 top-0 h-full w-1 bg-primary rounded-r" />}
-              <Icon className="w-5 h-5 flex-shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">{item.label}</span>
-                  {item.badge && (
-                    <span className="bg-primary text-primary-foreground text-xs font-semibold px-2 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                </>
-              )}
-            </button>
-          );
-        })}
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        const isActive = location.pathname === item.path;
+        return (
+          <button
+            key={item.label}
+            onClick={() => {
+              navigate(item.path);
+              onNavigate?.(item.label);
+            }}
+            className={`w-full flex items-center gap-3 px-6 py-3 transition-all relative group ${
+              isActive
+                ? 'text-primary bg-primary/10 font-semibold'
+                : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+            }`}
+          >
+            {isActive && <div className="absolute left-0 top-0 h-full w-1 bg-primary rounded-r" />}
+            <Icon className="w-5 h-5 flex-shrink-0" />
+            {!collapsed && (
+              <>
+                <span className="flex-1 text-left">{item.label}</span>
+                {item.badge && (
+                  <span className="bg-primary text-primary-foreground text-xs font-semibold px-2 py-0.5 rounded-full">
+                    {item.badge}
+                  </span>
+                )}
+              </>
+            )}
+          </button>
+        );
+      })}
       </nav>
     </aside>
   );
