@@ -24,8 +24,8 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
     { icon: BarChart3, label: 'Analytics', path: '/analytics' },
     { icon: Sparkles, label: 'AI Insights', path: '/insights' },
     { icon: AlertTriangle, label: 'Issues', badge: 23, path: '/issues' },
-    { icon: Settings, label: 'Settings', path: '/dashboard' },
-    { icon: HelpCircle, label: 'Help & Support', path: '/dashboard' },
+    { icon: Settings, label: 'Settings', path: '/settings' },
+    { icon: HelpCircle, label: 'Help & Support', path: '/help' },
   ];
 
   return (

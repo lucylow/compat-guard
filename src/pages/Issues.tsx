@@ -34,15 +34,19 @@ const Issues = () => {
     }
   };
 
-  const issuesByCategory = issues?.reduce((acc, issue) => {
-    acc[issue.category] = (acc[issue.category] || 0) + 1;
+  const issuesByCategory = issues.reduce((acc, issue) => {
+    if (issue && issue.category) {
+      acc[issue.category] = (acc[issue.category] || 0) + 1;
+    }
     return acc;
-  }, {} as Record<string, number>) || {};
+  }, {} as Record<string, number>);
 
-  const issuesBySeverity = issues?.reduce((acc, issue) => {
-    acc[issue.severity] = (acc[issue.severity] || 0) + 1;
+  const issuesBySeverity = issues.reduce((acc, issue) => {
+    if (issue && issue.severity) {
+      acc[issue.severity] = (acc[issue.severity] || 0) + 1;
+    }
     return acc;
-  }, {} as Record<string, number>) || {};
+  }, {} as Record<string, number>);
 
   return (
     <div className="min-h-screen w-full bg-background overflow-x-auto">
@@ -57,7 +61,7 @@ const Issues = () => {
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-foreground mb-2">Issues</h1>
               <p className="text-muted-foreground">
-                {issues?.length || 0} compatibility issues found
+                {Array.isArray(issues) ? issues.length : 0} compatibility issues found
               </p>
             </div>
 
