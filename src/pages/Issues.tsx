@@ -9,7 +9,7 @@ const Issues = () => {
   const [severityFilter, setSeverityFilter] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
 
-  const { data: issues, isLoading } = useIssues(currentProjectId, {
+  const { data: issues = [], isLoading } = useIssues(currentProjectId, {
     severity: severityFilter || undefined,
     category: categoryFilter || undefined
   });

@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "jsx": "react",
     "outDir": "dist",
     "baseUrl": ".",
@@ -18,6 +19,6 @@
       "@compatguard/*": ["./packages/*/src"]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "mock-data/advanced-configuration.ts"]
 }
 

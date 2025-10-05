@@ -29,7 +29,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
   ];
 
   return (
-    <aside className={`bg-card border-r border-border transition-all duration-300 flex flex-col ${collapsed ? 'w-16' : 'w-64'}`}>
+    <aside className={`bg-card border-r border-border transition-all duration-300 flex flex-col ${collapsed ? 'w-16' : 'w-64'} min-h-screen`}>
       {/* Header */}
       <div className="p-6 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -63,7 +63,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 py-4">
+      <nav className="flex-1 py-4 overflow-x-visible">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = location.pathname === item.path;

@@ -10,8 +10,10 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
-      <Toaster position="top-center" richColors />
+      <div className="min-h-screen w-full flex flex-col">
+        <App />
+        <Toaster position="top-center" richColors />
+      </div>
     </QueryClientProvider>
   </React.StrictMode>,
 );
