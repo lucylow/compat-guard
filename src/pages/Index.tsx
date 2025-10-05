@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, AlertTriangle, TrendingUp, Download, RefreshCw, Code, GitBranch, Shield, Users, Zap, AlertCircle, FileCode, Clock } from 'lucide-react';
+import { CheckCircle, AlertTriangle, TrendingUp, Download, RefreshCw, Code, GitBranch, Shield, Users, Zap, AlertCircle, FileCode, Clock, FileJson, FileText, FileSpreadsheet } from 'lucide-react';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { StatsCard } from '../components/StatsCard';
 import { AccessibilityPanel } from '../components/AccessibilityPanel';
 import { ToastProvider, useToast } from '../components/Toast';
 import { useLatestScan, useScanProject, useIssues } from '../hooks/useProjects';
+import { exportAsJSON, exportAsCSV, exportAsHTML } from '../services/reportExport';
 
 const DashboardContent = () => {
   const { showToast } = useToast();
   const [currentProjectId, setCurrentProjectId] = useState('project-dashboard'); // Default project
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   // Fetch data from API
   const { data: scanData, isLoading, refetch } = useLatestScan(currentProjectId);
@@ -42,11 +44,26 @@ const DashboardContent = () => {
         const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
         searchInput?.focus();
       }
+      if (e.key === 'Escape') {
+        setShowExportMenu(false);
+      }
+    };
+
+    // Close export menu on click outside
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (showExportMenu && !target.closest('.export-menu-container')) {
+        setShowExportMenu(false);
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [showToast]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showToast, showExportMenu]);
 
   const handleNavigation = (item: string) => {
     showToast(`Navigated to ${item}`, 'Navigation', 'info');
@@ -69,11 +86,25 @@ const DashboardContent = () => {
     }
   };
 
-  const handleExport = () => {
-    showToast('Exporting compatibility report...', 'Export Started', 'info');
-    setTimeout(() => {
-      showToast('Report exported successfully', 'Export Complete', 'success');
-    }, 1500);
+  const handleExport = (format: 'json' | 'csv' | 'html') => {
+    showToast(`Exporting compatibility report as ${format.toUpperCase()}...`, 'Export Started', 'info');
+    try {
+      switch (format) {
+        case 'json':
+          exportAsJSON(currentProjectId);
+          break;
+        case 'csv':
+          exportAsCSV(currentProjectId);
+          break;
+        case 'html':
+          exportAsHTML(currentProjectId);
+          break;
+      }
+      showToast(`Report exported successfully as ${format.toUpperCase()}`, 'Export Complete', 'success');
+      setShowExportMenu(false);
+    } catch (error) {
+      showToast('Export failed. Please try again.', 'Export Error', 'error');
+    }
   };
 
   // Use data from API or show loading state
@@ -113,13 +144,42 @@ const DashboardContent = () => {
                 </p>
               </div>
               <div className="flex gap-3">
-                <button
-                  onClick={handleExport}
-                  className="flex items-center gap-2 px-4 py-3 border border-border rounded-lg text-foreground hover:bg-muted transition-colors"
-                >
-                  <Download className="w-4 h-4" />
-                  Export Report
-                </button>
+                <div className="relative export-menu-container">
+                  <button
+                    onClick={() => setShowExportMenu(!showExportMenu)}
+                    className="flex items-center gap-2 px-4 py-3 border border-border rounded-lg text-foreground hover:bg-muted transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                    Export Report
+                  </button>
+                  {showExportMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg z-50">
+                      <div className="py-2">
+                        <button
+                          onClick={() => handleExport('json')}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors flex items-center gap-3"
+                        >
+                          <FileJson className="w-4 h-4 text-primary" />
+                          <span>Export as JSON</span>
+                        </button>
+                        <button
+                          onClick={() => handleExport('csv')}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors flex items-center gap-3"
+                        >
+                          <FileSpreadsheet className="w-4 h-4 text-accent" />
+                          <span>Export as CSV</span>
+                        </button>
+                        <button
+                          onClick={() => handleExport('html')}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors flex items-center gap-3"
+                        >
+                          <FileText className="w-4 h-4 text-secondary" />
+                          <span>Export as HTML</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <button
                   onClick={handleNewScan}
                   disabled={scanProject.isPending}
