@@ -325,7 +325,6 @@
         "Use useCompatibilityCheck hook in Lovable components"
       ]
     }
-    // ...existing code...
   },
   "customRules": [
     {
@@ -338,7 +337,7 @@
       "successRate": 96.8
     },
     {
-      "id": "custom_css_performance", 
+      "id": "custom_css_performance",
       "name": "CSS Performance Optimizer",
       "description": "Flags CSS patterns that cause layout thrashing or poor performance",
       "severity": "warning",

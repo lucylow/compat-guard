@@ -354,8 +354,8 @@ export class CompatGuardLinter {
   }
 }
 
-// src/index.js
-export { CompatGuardLinter, BaselineService, BaselineRule, CSSBaselineRule };
+// Export all classes
+// (Already exported above)
 
 // Utility function for quick linting
 export async function createLinter(targetBaseline = '2024', options = {}) {

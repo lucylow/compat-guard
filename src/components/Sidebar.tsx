@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, FolderKanban, BarChart3, AlertTriangle, Settings, HelpCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react';
+import { Home, FolderKanban, BarChart3, AlertTriangle, Settings, HelpCircle, ChevronLeft, ChevronRight, Shield, Sparkles, FolderTree } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavItem {
@@ -20,9 +20,10 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
 
   const navItems: NavItem[] = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
-    { icon: FolderKanban, label: 'Projects', path: '/dashboard' },
+    { icon: FolderTree, label: 'Portfolio', path: '/portfolio' },
     { icon: BarChart3, label: 'Analytics', path: '/analytics' },
-    { icon: AlertTriangle, label: 'Issues', badge: 23, path: '/dashboard' },
+    { icon: Sparkles, label: 'AI Insights', path: '/insights' },
+    { icon: AlertTriangle, label: 'Issues', badge: 23, path: '/issues' },
     { icon: Settings, label: 'Settings', path: '/dashboard' },
     { icon: HelpCircle, label: 'Help & Support', path: '/dashboard' },
   ];

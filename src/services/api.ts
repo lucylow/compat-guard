@@ -1,4 +1,5 @@
 // API Service Layer for CompatGuard
+import { mockProjects, mockIssues, generateMockScanResult, generateMockAnalytics, getIssuesByFilter } from './mockData';
 
 export interface Project {
   id: string;
@@ -130,7 +131,7 @@ class ApiService {
   // Analytics
   async getAnalytics(projectId: string): Promise<AnalyticsData> {
     if (this.mockMode) {
-      return this.getMockAnalytics();
+      return this.getMockAnalytics(projectId);
     }
     const response = await fetch(`${this.baseUrl}/projects/${projectId}/analytics`);
     return response.json();
@@ -142,7 +143,7 @@ class ApiService {
     category?: string;
   }): Promise<Issue[]> {
     if (this.mockMode) {
-      return this.getMockIssues();
+      return this.getMockIssues(projectId, filters);
     }
     const params = new URLSearchParams(filters as any);
     const response = await fetch(`${this.baseUrl}/projects/${projectId}/issues?${params}`);
@@ -157,114 +158,19 @@ class ApiService {
 
   // Mock Data Providers
   private getMockProjects(): Project[] {
-    return [
-      {
-        id: 'project-1',
-        name: 'E-Commerce Platform',
-        path: '/projects/ecommerce',
-        lastScan: new Date(),
-        compliance: 66.1,
-        issues: 211,
-        status: 'active'
-      }
-    ];
+    return mockProjects;
   }
 
   private getMockScanResult(projectId: string): ScanResult {
-    return {
-      projectId,
-      timestamp: new Date(),
-      compliance: 66.1,
-      totalIssues: 211,
-      criticalIssues: 23,
-      browserCoverage: 95,
-      avgFixTime: 18,
-      categories: {
-        css: { total: 145, issues: 89 },
-        javascript: { total: 312, issues: 78 },
-        html: { total: 45, issues: 12 },
-        webApi: { total: 121, issues: 32 }
-      },
-      issues: this.getMockIssues(),
-      complianceHistory: [
-        { month: 'Sep', score: 45 },
-        { month: 'Oct', score: 52 },
-        { month: 'Nov', score: 58 },
-        { month: 'Dec', score: 61 },
-        { month: 'Jan', score: 66 }
-      ],
-      browserBreakdown: [
-        { name: 'Chrome', coverage: 95, color: 'bg-primary' },
-        { name: 'Firefox', coverage: 88, color: 'bg-secondary' },
-        { name: 'Safari', coverage: 72, color: 'bg-accent' },
-        { name: 'Edge', coverage: 91, color: 'bg-primary/70' }
-      ]
-    };
+    return generateMockScanResult(projectId);
   }
 
-  private getMockIssues(): Issue[] {
-    return [
-      {
-        id: 'issue-1',
-        file: 'Modal.jsx',
-        issue: '<dialog> element not supported',
-        severity: 'critical',
-        impact: '100% users',
-        line: 42,
-        suggestion: 'Use polyfill or fallback to div-based modal',
-        category: 'html'
-      },
-      {
-        id: 'issue-2',
-        file: 'ProductGrid.css',
-        issue: 'CSS Subgrid not widely supported',
-        severity: 'high',
-        impact: '18% users',
-        line: 15,
-        suggestion: 'Use CSS Grid fallback',
-        category: 'css'
-      },
-      {
-        id: 'issue-3',
-        file: 'arrayHelpers.js',
-        issue: 'Array.flatMap compatibility issue',
-        severity: 'medium',
-        impact: '7% users',
-        line: 23,
-        suggestion: 'Add polyfill or use alternative',
-        category: 'javascript'
-      }
-    ];
+  private getMockIssues(projectId?: string, filters?: { severity?: string; category?: string }): Issue[] {
+    return getIssuesByFilter(projectId || 'project-1', filters);
   }
 
-  private getMockAnalytics(): AnalyticsData {
-    return {
-      currentCompliance: 66.1,
-      complianceTrend: 12.3,
-      browserCoverage: 95.0,
-      browserTrend: 8.7,
-      avgFixTime: 18,
-      fixTimeTrend: -15,
-      complianceHistory: [
-        { month: 'Sep', score: 45 },
-        { month: 'Oct', score: 52 },
-        { month: 'Nov', score: 58 },
-        { month: 'Dec', score: 61 },
-        { month: 'Jan', score: 66 }
-      ],
-      browserBreakdown: [
-        { name: 'Chrome', coverage: 95, color: 'bg-primary' },
-        { name: 'Firefox', coverage: 88, color: 'bg-secondary' },
-        { name: 'Safari', coverage: 72, color: 'bg-accent' },
-        { name: 'Edge', coverage: 91, color: 'bg-primary/70' }
-      ],
-      issuesTrend: [
-        { week: 'Week 1', resolved: 23, new: 12 },
-        { week: 'Week 2', resolved: 45, new: 8 },
-        { week: 'Week 3', resolved: 67, new: 15 },
-        { week: 'Week 4', resolved: 89, new: 11 }
-      ]
-    };
+  private getMockAnalytics(projectId?: string): AnalyticsData {
+    return generateMockAnalytics(projectId || 'project-1');
   }
 }
 
