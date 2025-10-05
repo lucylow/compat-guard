@@ -328,12 +328,4 @@ const DashboardContent = () => {
   );
 };
 
-const Index = () => {
-  return (
-    <ToastProvider>
-      <DashboardContent />
-    </ToastProvider>
-  );
-};
-
-export default Index;
+export default DashboardContent;

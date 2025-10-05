@@ -13,6 +13,7 @@ import Issues from './pages/Issues';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastProvider } from './components/Toast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,19 +28,21 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Index />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/issues" element={<Issues />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/help" element={<Help />} />
-        </Routes>
-        <Toaster position="top-center" richColors />
-      </BrowserRouter>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Index />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/issues" element={<Issues />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/help" element={<Help />} />
+          </Routes>
+          <Toaster position="top-center" richColors />
+        </BrowserRouter>
+      </ToastProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );
