@@ -1,0 +1,76 @@
+{
+  "portfolio": {
+    "totalProjects": 8,
+    "totalDevelopers": 47,
+    "totalCodeLines": "2.4M",
+    "aggregateCompliance": 72.8,
+    "trend": "improving"
+  },
+  "projectBreakdown": [
+    {
+      "id": "proj_ecommerce",
+      "name": "E-Commerce Platform",
+      "framework": "react",
+      "complianceScore": 66.1,
+      "riskLevel": "medium",
+      "teamSize": 12,
+      "migrationProgress": 28.4,
+      "keyIssues": ["CSS Subgrid", "Dialog Element", "IntersectionObserver"],
+      "businessImpact": "high"
+    },
+    {
+      "id": "proj_marketing",
+      "name": "Marketing Website",
+      "framework": "vue",
+      "complianceScore": 84.2,
+      "riskLevel": "low", 
+      "teamSize": 4,
+      "migrationProgress": 92.7,
+      "keyIssues": ["CSS Container Queries", "Color Mix Function"],
+      "businessImpact": "medium"
+    },
+    {
+      "id": "proj_admin",
+      "name": "Admin Dashboard",
+      "framework": "react",
+      "complianceScore": 58.9,
+      "riskLevel": "high",
+      "teamSize": 6,
+      "migrationProgress": 15.2,
+      "keyIssues": ["Legacy jQuery", "IE11 Polyfills", "Custom CSS Framework"],
+      "businessImpact": "critical"
+    },
+    {
+      "id": "proj_mobile",
+      "name": "Mobile Web App",
+      "framework": "svelte",
+      "complianceScore": 91.5,
+      "riskLevel": "very-low",
+      "teamSize": 3,
+      "migrationProgress": 96.8,
+      "keyIssues": ["Web Share API", "PWA Features"],
+      "businessImpact": "medium"
+    }
+  ],
+  "crossProjectInsights": {
+    "commonIssues": [
+      {
+        "feature": "CSS Grid/Subgrid",
+        "affectedProjects": 6,
+        "totalUserImpact": "34%",
+        "recommendedSolution": "Progressive enhancement with feature detection"
+      },
+      {
+        "feature": "Modern JavaScript APIs",
+        "affectedProjects": 7, 
+        "totalUserImpact": "22%",
+        "recommendedSolution": "Polyfill strategy with conditional loading"
+      }
+    ],
+    "resourceOptimization": {
+      "sharedComponents": 23,
+      "reusableMigrationPatterns": 15,
+      "crossTeamKnowledgeTransfer": "8 sessions/month"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "organizationPolicies": {
+    "complianceStandards": {
+      "minimumBaseline": 2023,
+      "targetBaseline": 2024,
+      "criticalUserThreshold": 5.0,
+      "allowedLegacyFeatures": ["jQuery 3.6+", "Lodash 4.17+"],
+      "bannedFeatures": ["document.write", "eval for JSON"]
+    },
+    "frameworkSpecific": {
+      "react": {
+        "preferredPatterns": ["functional components", "hooks over HOCs", "TypeScript"],
+        "discouragedPatterns": ["class components", "mixin patterns", "propTypes"]
+      },
+      "vue": {
+        "preferredPatterns": ["Composition API", "TypeScript", "Vite"],
+        "discouragedPatterns": ["Options API", "Vue 2 patterns", "webpack"]
+      }
+    }
+  },
+  "customRules": [
+    {
+      "id": "custom_react_hook_deps",
+      "name": "React Hook Dependency Analysis",
+      "description": "Ensures all dependencies are properly declared in useEffect and useCallback",
+      "severity": "error",
+      "framework": "react",
+      "implementation": "function checkHookDependencies(node, context) {\n  // Custom implementation for dependency analysis\n}",
+      "successRate": 96.8
+    },
+    {
+      "id": "custom_css_performance", 
+      "name": "CSS Performance Optimizer",
+      "description": "Flags CSS patterns that cause layout thrashing or poor performance",
+      "severity": "warning",
+      "framework": "css",
+      "implementation": "function checkCSSPerformance(declaration, context) {\n  // Custom CSS performance checks\n}",
+      "successRate": 88.3
+    }
+  ],
+  "teamPreferences": {
+    "codeStyle": {
+      "indentation": 2,
+      "quotes": "single",
+      "semicolons": true,
+      "trailingCommas": "es5"
+    },
+    "testing": {
+      "framework": "jest",
+      "coverageThreshold": 80,
+      "testLocation": "__tests__",
+      "preferMocking": "manual"
+    }
+  }
+}

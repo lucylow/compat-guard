@@ -1,0 +1,50 @@
+{
+  "smartRefactoring": {
+    "recentRefactors": [
+      {
+        "file": "src/components/LegacyModal.jsx",
+        "originalCode": "class LegacyModal extends React.Component {\n  componentDidMount() {\n    document.addEventListener('keydown', this.handleEscape);\n  }\n  \n  componentWillUnmount() {\n    document.removeEventListener('keydown', this.handleEscape);\n  }\n  \n  handleEscape = (e) => {\n    if (e.keyCode === 27) this.props.onClose();\n  }\n  \n  render() {\n    return ReactDOM.createPortal(\n      <div className=\"modal-backdrop\">\n        <div className=\"modal-content\">\n          {this.props.children}\n        </div>\n      </div>,\n      document.body\n    );\n  }\n}",
+        "refactoredCode": "function ModernModal({ children, onClose, isOpen }) {\n  const dialogRef = useRef();\n  \n  useEffect(() => {\n    const dialog = dialogRef.current;\n    if (isOpen) {\n      dialog.showModal();\n      dialog.addEventListener('close', onClose);\n    }\n    \n    return () => {\n      dialog.removeEventListener('close', onClose);\n    };\n  }, [isOpen, onClose]);\n  \n  return (\n    <dialog \n      ref={dialogRef} \n      className=\"modal\"\n      onCancel={onClose}\n    >\n      <div className=\"modal-content\">\n        {children}\n      </div>\n    </dialog>\n  );\n}",
+        "improvements": {
+          "linesOfCode": "-45%",
+          "accessibility": "+62%",
+          "performance": "+28%",
+          "bundleSize": "-3.2KB",
+          "browserCompatibility": "95% → 99%"
+        },
+        "aiConfidence": 0.96
+      }
+    ],
+    "refactoringPatterns": {
+      "classToFunctional": {
+        "successRate": 98.2,
+        "performanceGain": "15-25%",
+        "commonUseCases": ["Modal components", "Form handlers", "API consumers"]
+      },
+      "jqueryToVanilla": {
+        "successRate": 94.7,
+        "bundleSizeReduction": "12-45KB",
+        "commonUseCases": ["DOM manipulation", "Event handling", "AJAX requests"]
+      },
+      "cssModernization": {
+        "successRate": 91.3,
+        "performanceGain": "8-18%",
+        "commonUseCases": ["Grid systems", "Animations", "Responsive layouts"]
+      }
+    }
+  },
+  "codeQualityMetrics": {
+    "beforeRefactoring": {
+      "maintainability": 62.3,
+      "testability": 58.7,
+      "readability": 65.2,
+      "reusability": 47.8
+    },
+    "afterRefactoring": {
+      "maintainability": 84.7,
+      "testability": 89.2,
+      "readability": 87.5,
+      "reusability": 76.3
+    }
+  }
+}

@@ -74,13 +74,13 @@ const Analytics = () => {
                 <TrendingUp className="w-5 h-5 text-primary" />
                 Compliance Score Trend
               </h2>
-              <div className="h-64 flex items-end justify-between gap-4">
+              <div className="flex items-end justify-between gap-4 pb-2">
                 {complianceHistory.map((item, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center gap-2">
-                    <div className="relative w-full bg-muted rounded-t-lg overflow-hidden" style={{ height: '200px' }}>
-                      <div 
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-3">
+                    <div className="relative w-full bg-muted rounded-t-lg overflow-hidden" style={{ height: '180px' }}>
+                      <div
                         className="absolute bottom-0 w-full bg-gradient-to-t from-primary to-primary/60 rounded-t-lg transition-all duration-500 hover:from-primary/80"
-                        style={{ height: `${(item.score / 100) * 200}px` }}
+                        style={{ height: `${(item.score / 100) * 180}px` }}
                       />
                       <div className="absolute top-2 left-0 right-0 text-center text-sm font-bold text-foreground">
                         {item.score}%

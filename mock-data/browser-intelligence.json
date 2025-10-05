@@ -1,0 +1,64 @@
+{
+  "marketAnalysis": {
+    "browserTrends": {
+      "globalUsage": {
+        "chrome": 64.8,
+        "safari": 18.7,
+        "firefox": 3.2,
+        "edge": 4.1,
+        "samsungInternet": 2.9,
+        "opera": 2.2,
+        "other": 4.1
+      },
+      "emergingMarkets": {
+        "region": "Southeast Asia",
+        "dominantBrowser": "Samsung Internet",
+        "usageTrend": "growing",
+        "keyConsiderations": ["low-end devices", "data constraints", "touch interfaces"]
+      }
+    },
+    "featureAdoptionRates": {
+      "cssGrid": {
+        "globalSupport": 97.2,
+        "growthRate": "+2.1% annually",
+        "keyHoldouts": ["IE11", "Safari 10-12"]
+      },
+      "cssContainerQueries": {
+        "globalSupport": 82.4,
+        "growthRate": "+18.7% annually", 
+        "keyHoldouts": ["Safari < 16", "Firefox < 110"]
+      },
+      "webComponents": {
+        "globalSupport": 95.8,
+        "growthRate": "+8.3% annually",
+        "keyHoldouts": ["IE11", "Edge < 79"]
+      }
+    }
+  },
+  "proactiveRecommendations": {
+    "featuresToAdopt": [
+      {
+        "feature": "CSS Cascade Layers",
+        "currentSupport": 88.7,
+        "projectedSupport": 95.2,
+        "benefits": ["Better CSS organization", "Reduced specificity conflicts"],
+        "readiness": "adopt"
+      },
+      {
+        "feature": "View Transitions API",
+        "currentSupport": 72.3,
+        "projectedSupport": 89.1,
+        "benefits": ["Smooth page transitions", "Enhanced UX"],
+        "readiness": "experiment"
+      }
+    ],
+    "featuresToMonitor": [
+      {
+        "feature": "CSS Nesting",
+        "currentSupport": 78.9,
+        "adoptionBarrier": "Safari 16.4+ required",
+        "recommendation": "Wait for Safari 16.4+ to reach 85%"
+      }
+    ]
+  }
+}
