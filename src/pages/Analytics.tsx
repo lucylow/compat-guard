@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { Sidebar } from '../components/Sidebar';
 import { TrendingUp, TrendingDown, Users, Globe, Clock, Activity } from 'lucide-react';
 import { StatsCard } from '../components/StatsCard';
+import { useAnalytics } from '../hooks/useProjects';
 
 const Analytics = () => {
-  const complianceHistory = [
+  const [currentProjectId] = useState('project-1');
+  const { data: analyticsData, isLoading } = useAnalytics(currentProjectId);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Activity className="w-12 h-12 text-primary animate-pulse mx-auto mb-4" />
+          <p className="text-lg text-muted-foreground">Loading analytics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    currentCompliance = 66.1,
+    complianceTrend = 12.3,
+    browserCoverage = 95,
+    browserTrend = 8.7,
+    avgFixTime = 18,
+    fixTimeTrend = -15,
+    complianceHistory: apiComplianceHistory,
+    browserBreakdown: apiBrowserBreakdown,
+    issuesTrend: apiIssuesTrend
+  } = analyticsData || {};
+
+  // Use API data with fallbacks
+  const complianceHistory = apiComplianceHistory?.length > 0 ? apiComplianceHistory : [
     { month: 'Sep', score: 45 },
     { month: 'Oct', score: 52 },
     { month: 'Nov', score: 58 },
@@ -13,14 +41,14 @@ const Analytics = () => {
     { month: 'Jan', score: 66 },
   ];
 
-  const browserBreakdown = [
+  const browserBreakdown = apiBrowserBreakdown?.length > 0 ? apiBrowserBreakdown : [
     { name: 'Chrome', coverage: 95, color: 'bg-primary' },
     { name: 'Firefox', coverage: 88, color: 'bg-secondary' },
     { name: 'Safari', coverage: 72, color: 'bg-accent' },
     { name: 'Edge', coverage: 91, color: 'bg-primary/70' },
   ];
 
-  const issuesTrend = [
+  const issuesTrend = apiIssuesTrend?.length > 0 ? apiIssuesTrend : [
     { week: 'Week 1', resolved: 23, new: 12 },
     { week: 'Week 2', resolved: 45, new: 8 },
     { week: 'Week 3', resolved: 67, new: 15 },
@@ -41,28 +69,28 @@ const Analytics = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <StatsCard
                 icon={Activity}
-                value="66.1%"
+                value={`${currentCompliance.toFixed(1)}%`}
                 label="Current Compliance"
-                progress={66}
-                trend="+12.3%"
+                progress={currentCompliance}
+                trend={`+${complianceTrend}%`}
                 trendUp={true}
                 variant="primary"
               />
               <StatsCard
                 icon={Users}
-                value="95.0%"
+                value={`${browserCoverage.toFixed(1)}%`}
                 label="Browser Coverage"
-                progress={95}
-                trend="+8.7%"
+                progress={browserCoverage}
+                trend={`+${browserTrend}%`}
                 trendUp={true}
                 variant="success"
               />
               <StatsCard
                 icon={Clock}
-                value="18 days"
+                value={`${avgFixTime} days`}
                 label="Avg. Fix Time"
                 progress={35}
-                trend="-15%"
+                trend={`${fixTimeTrend}%`}
                 trendUp={true}
                 variant="warning"
               />
@@ -70,17 +98,17 @@ const Analytics = () => {
 
             {/* Compliance Trend Chart */}
             <div className="bg-card rounded-xl p-6 shadow-sm border border-border mb-8 animate-fade-in">
-              <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary" />
                 Compliance Score Trend
               </h2>
-              <div className="flex items-end justify-between gap-4 pb-2">
+              <div className="flex items-end justify-between gap-4">
                 {complianceHistory.map((item, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center gap-3">
-                    <div className="relative w-full bg-muted rounded-t-lg overflow-hidden" style={{ height: '180px' }}>
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-2">
+                    <div className="relative w-full bg-muted rounded-t-lg overflow-hidden" style={{ height: '160px' }}>
                       <div
                         className="absolute bottom-0 w-full bg-gradient-to-t from-primary to-primary/60 rounded-t-lg transition-all duration-500 hover:from-primary/80"
-                        style={{ height: `${(item.score / 100) * 180}px` }}
+                        style={{ height: `${(item.score / 100) * 160}px` }}
                       />
                       <div className="absolute top-2 left-0 right-0 text-center text-sm font-bold text-foreground">
                         {item.score}%

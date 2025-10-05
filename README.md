@@ -1,4 +1,3 @@
-
 # CompatGuard: Your Framework's Best Friend for Safe Web Feature Adoption
 
 ![CompatGuard Banner](https://via.placeholder.com/1200x400/4F46E5/FFFFFF?text=CompatGuard:+AI-Powered+Web+Compatibility)

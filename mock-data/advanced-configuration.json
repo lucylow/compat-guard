@@ -2,7 +2,7 @@
   "organizationPolicies": {
     "complianceStandards": {
       "minimumBaseline": 2023,
-      "targetBaseline": 2024,
+      "targetBaseline": 2025,
       "criticalUserThreshold": 5.0,
       "allowedLegacyFeatures": ["jQuery 3.6+", "Lodash 4.17+"],
       "bannedFeatures": ["document.write", "eval for JSON"]
@@ -15,8 +15,317 @@
       "vue": {
         "preferredPatterns": ["Composition API", "TypeScript", "Vite"],
         "discouragedPatterns": ["Options API", "Vue 2 patterns", "webpack"]
+      },
+      "svelte": {
+        "preferredPatterns": ["stores", "actions", "TypeScript"],
+        "discouragedPatterns": ["legacy lifecycle", "custom DOM manipulation"]
       }
+    },
+    "idePlugin": {
+      "enabled": true,
+      "supportedIDEs": ["VS Code"],
+      "features": ["inline diagnostics", "hover info", "quick fixes", "compatibility report"]
+    },
+    "ideIntegration": {
+      "vscodeExtension": {
+        "name": "compatguard",
+        "displayName": "CompatGuard",
+        "description": "Your framework's best friend for safe web feature adoption",
+        "version": "1.0.0",
+        "publisher": "compatguard",
+        "engines": { "vscode": "^1.74.0" },
+        "categories": ["Linters", "Other"],
+        "activationEvents": [
+          "onLanguage:javascript",
+          "onLanguage:typescript",
+          "onLanguage:javascriptreact",
+          "onLanguage:typescriptreact",
+          "onLanguage:vue",
+          "onLanguage:svelte",
+          "onLanguage:css",
+          "onLanguage:html"
+        ],
+        "main": "./out/extension.js",
+        "contributes": {
+          "languages": [
+            { "id": "javascript", "extensions": [".js", ".jsx"] },
+            { "id": "typescript", "extensions": [".ts", ".tsx"] },
+            { "id": "vue", "extensions": [".vue"] },
+            { "id": "svelte", "extensions": [".svelte"] }
+          ],
+          "configuration": {
+            "title": "CompatGuard",
+            "properties": {
+              "compatguard.targetYear": {
+                "type": "number",
+                "default": 2024,
+                "description": "Target Baseline year for compatibility checking"
+              },
+              "compatguard.targetStatus": {
+                "type": "string",
+                "enum": ["high", "low"],
+                "default": "high",
+                "description": "Target Baseline status: 'high' for widely available, 'low' for newly available"
+              },
+              "compatguard.enabledFrameworks": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["react", "vue", "svelte", "angular"]
+                },
+                "default": ["react", "vue", "svelte"],
+                "description": "Frameworks to analyze for compatibility"
+              },
+              "compatguard.severityLevel": {
+                "type": "string",
+                "enum": ["error", "warning", "information", "hint"],
+                "default": "warning",
+                "description": "Severity level for compatibility issues"
+              },
+              "compatguard.showHoverInformation": {
+                "type": "boolean",
+                "default": true,
+                "description": "Show Baseline status on hover"
+              },
+              "compatguard.enableQuickFixes": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable quick fix suggestions"
+              },
+              "compatguard.autoImportPolyfills": {
+                "type": "boolean",
+                "default": false,
+                "description": "Automatically suggest polyfill imports"
+              }
+            }
+          },
+          "commands": [
+            {
+              "command": "compatguard.showCompatibilityReport",
+              "title": "CompatGuard: Show Compatibility Report",
+              "category": "CompatGuard"
+            },
+            {
+              "command": "compatguard.fixAllInFile",
+              "title": "CompatGuard: Fix all auto-fixable issues in file",
+              "category": "CompatGuard"
+            },
+            {
+              "command": "compatguard.toggle",
+              "title": "CompatGuard: Toggle CompatGuard",
+              "category": "CompatGuard"
+            }
+          ],
+          "menus": {
+            "command-palette": [
+              { "command": "compatguard.showCompatibilityReport" },
+              { "command": "compatguard.fixAllInFile" },
+              { "command": "compatguard.toggle" }
+            ]
+          }
+        }
+      },
+      "features": [
+        "Inline diagnostics (red squiggles under non-Baseline features)",
+        "Hover information (Baseline status on hover over web APIs)",
+        "Quick fixes (automatic import of polyfills or alternative APIs)",
+        "Code actions (replace with Baseline-compatible alternative)"
+      ]
+    },
+    "lspServer": {
+      "enabled": true,
+      "language": "TypeScript",
+      "diagnostics": true,
+      "codeActions": true
+    },
+    "eslintPlugin": {
+      "enabled": true,
+      "integration": ["CLI", "CI/CD"],
+      "rules": ["baseline-feature-usage", "framework-specific"]
+    },
+    "buildPlugins": {
+      "enabled": true,
+      "tools": ["Webpack", "Vite"],
+      "reportOutput": "baseline-report.json"
+    },
+    "baselineDataSources": {
+      "npmPackages": ["web-features"],
+      "apis": ["WPD API"],
+      "updateFrequency": "weekly"
+    },
+    "baselineMigrationMode": {
+      "enabled": true,
+      "migrationPlan": "auto-generated",
+      "reportLocation": "baseline-migration-report.json"
+    },
+    "frameworkBestPractices": {
+      "react": ["useEffect with Baseline APIs", "prefer semantic HTML"],
+      "vue": ["use Composition API", "prefer Baseline-compliant directives"],
+      "svelte": ["use Baseline actions", "prefer reactive statements"]
+    },
+    "teamComplianceDashboard": {
+      "enabled": true,
+      "dashboardUrl": "https://dashboard.example.com/baseline",
+      "tracking": ["project", "team", "individual"]
+    },
+    "polyfillIntelligence": {
+      "autoSuggest": true,
+      "strategy": "conditional loading",
+      "supportedPolyfills": ["IntersectionObserver", "ResizeObserver", "core-js"]
+    },
+    "buildToolIntegration": {
+      "webpackPlugin": {
+        "description": "Bundle-time Baseline compliance checking",
+        "usage": "Add WebpackBaselinePlugin to your webpack.config.js plugins",
+        "example": "new WebpackBaselinePlugin({ failOnError: true, target: 'high' })"
+      },
+      "vitePlugin": {
+        "description": "Dev server integration with hot-reload warnings",
+        "usage": "Add viteBaselinePlugin to your vite.config.ts plugins",
+        "example": "viteBaselinePlugin({ target: 'high' })"
+      },
+      "eslintPlugin": {
+        "description": "Traditional linting pipeline integration",
+        "usage": "Add baselineESLintPlugin to your ESLint config",
+        "example": "'baseline/check-apis': 'error'"
+      },
+      "ciCdPlugin": {
+        "description": "Fail builds on non-Baseline feature usage in critical paths",
+        "usage": "Run baseline linter in CI/CD pipeline",
+        "example": "npx your-baseline-linter --fail-on-critical"
+      }
+    },
+    "baselineCompatibilityIntegration": {
+      "browserslist": {
+        "description": "Browserslist now supports Baseline queries (e.g. 'baseline', 'baseline widely available', 'baseline 2025'). Use in Babel, PostCSS, autoprefixer, etc.",
+        "example": "browserslist: ['baseline 2025']"
+      },
+      "webFeaturesPackage": {
+        "description": "web-features NPM package provides Baseline feature data keyed to MDN/BCD. Use compute-baseline to query Baseline status.",
+        "usage": "import { getFeature } from 'web-features';",
+        "helper": "compute-baseline"
+      },
+      "linters": {
+        "eslint": {
+          "cssRule": "css/use-baseline",
+          "htmlRule": "@html-eslint/use-baseline",
+          "description": "ESLint and Stylelint plugins enforce Baseline thresholds for CSS/HTML/JS.",
+          "configExample": {
+            "css/use-baseline": ["warn", { "available": "widely" }]
+          }
+        },
+        "stylelint": {
+          "plugin": "stylelint-plugin-use-baseline",
+          "description": "Disallows CSS features not in Baseline (uses web-features data)."
+        }
+      },
+      "editorIntegration": {
+        "vscode": {
+          "hover": "Shows Baseline status on hover for CSS/HTML/JS",
+          "version": ">=1.100"
+        },
+        "chromeDevTools": {
+          "elementsPanel": "Displays Baseline status and year of full support"
+        },
+        "communityExtensions": [
+          "Baseline Buddy (hovercards for CSS/JS/HTML)"
+        ]
+      },
+      "buildCiIntegrations": {
+        "netlifyExtension": {
+          "description": "Analyzes real-user data for Baseline support, recommends thresholds, and integrates with Browserslist, Stylelint, ESLint, VS Code, etc."
+        },
+        "plugins": [
+          "Webpack",
+          "Rollup",
+          "Vite"
+        ]
+      },
+      "dashboardsWidgets": {
+        "webPlatformStatus": "Dashboard filters features by Baseline set/year",
+        "baselineStatusComponent": "<baseline-status> web component for live Baseline badges",
+        "mdnDocs": "MDN pages display Baseline banners"
+      },
+      "frameworkAnalysis": {
+        "description": "Framework-aware analysis for React JSX, Vue templates, Svelte components to detect non-Baseline usage (custom AST rules)."
+      },
+      "aiMigrationAssistant": {
+        "description": "AI-powered migration assistant suggests fixes, polyfills, or alternate implementations for non-Baseline features."
+      },
+      "realTimeFeedback": {
+        "description": "IDE and linter integrations provide inline diagnostics, hover info, quick fixes, and code actions for Baseline compliance."
+      },
+      "riskAssessment": {
+        "description": "RUM analytics dashboards show percent of users supporting Baseline features, enabling quantitative risk decisions."
+      },
+      "dataPipelineUpdates": {
+        "description": "Automated updates from BCD into project, keeping Baseline data fresh and canonical."
+      },
+      "polyfillAndFallbacks": {
+        "description": "Tools can recommend polyfills for Limited features, but Baseline ignores polyfills by design."
+      },
+      "coverageAndPerformance": {
+        "description": "Focus on core browsers; performance at scale via incremental analysis and caching."
+      },
+      "userExperience": {
+        "description": "Configurable strictness (warn/error), filterable dashboards, suppressed lint codes, actionable suggestions."
+      },
+      "novelIntegrations": {
+        "description": "Opportunities for new tools: Baselinifier transpiler, CSS-in-JS Baseline checks, design system integration."
+      }
+    },
+    "lovableSupabaseIntegration": {
+      "projectStructure": [
+        "src/services/compatibilityService.js",
+        "src/services/supabaseClient.js",
+        "src/components/CompatibilityDashboard.jsx",
+        "src/hooks/useCompatibilityCheck.js",
+        "src/utils/helpers.js"
+      ],
+      "compatibilityService": {
+        "description": "Centralizes Baseline and browser compatibility data fetching using web-features, MDN BCD, and Web Platform Dashboard API.",
+        "methods": [
+          "getBaselineStatus(featureId)",
+          "queryWebPlatformDashboard(query)",
+          "getNewlyAvailableFeatures(year)",
+          "getBrowserSupport(bcdKey)",
+          "getWidelyAvailableCSSFeatures()"
+        ]
+      },
+      "supabaseClient": {
+        "description": "Initializes Supabase client and provides saveScanResult(scanData) for storing scan results.",
+        "setup": [
+          "Create Supabase project",
+          "Create compatibility_scans table (id, project_id, feature_id, baseline_status, browser_support, created_at)",
+          "Configure supabaseUrl and supabaseAnonKey"
+        ]
+      },
+      "useCompatibilityCheckHook": {
+        "description": "Custom React hook for running compatibility checks and saving results to Supabase.",
+        "methods": [
+          "checkFeature(featureId)",
+          "checkMultipleFeatures(featureIds)",
+          "clearResults()"
+        ],
+        "state": [
+          "results",
+          "loading",
+          "error"
+        ]
+      },
+      "implementationNotes": [
+        "Uses web-features for local Baseline data",
+        "Uses Web Platform Dashboard API for remote queries",
+        "Uses MDN BCD for browser support details",
+        "Saves scan results to Supabase for dashboard/history"
+      ],
+      "setupSteps": [
+        "npm install web-features @mdn/browser-compat-data @supabase/supabase-js",
+        "Configure Supabase project and credentials",
+        "Use useCompatibilityCheck hook in Lovable components"
+      ]
     }
+    // ...existing code...
   },
   "customRules": [
     {

@@ -1,21 +1,34 @@
 import React from 'react';
 import { Search, Bell } from 'lucide-react';
+import { ProjectSelector } from './ProjectSelector';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
+  currentProjectId?: string;
+  onProjectChange?: (projectId: string) => void;
 }
 
-export const Header = ({ onSearch }: HeaderProps) => {
+export const Header = ({ onSearch, currentProjectId, onProjectChange }: HeaderProps) => {
   return (
     <header className="bg-card border-b border-border px-6 py-4 flex justify-between items-center shadow-sm">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb">
-        <a href="#" className="hover:text-foreground transition-colors" tabIndex={0}>Projects</a>
-        <span>/</span>
-        <a href="#" className="hover:text-foreground transition-colors" tabIndex={0}>E-Commerce Platform</a>
-        <span>/</span>
-        <span className="text-foreground font-medium">Dashboard</span>
-      </nav>
+      {/* Project Selector & Breadcrumb */}
+      <div className="flex items-center gap-4">
+        {currentProjectId && onProjectChange && (
+          <ProjectSelector
+            currentProjectId={currentProjectId}
+            onProjectChange={onProjectChange}
+          />
+        )}
+        {!currentProjectId && (
+          <nav className="flex items-center gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb">
+            <a href="#" className="hover:text-foreground transition-colors" tabIndex={0}>Projects</a>
+            <span>/</span>
+            <a href="#" className="hover:text-foreground transition-colors" tabIndex={0}>E-Commerce Platform</a>
+            <span>/</span>
+            <span className="text-foreground font-medium">Dashboard</span>
+          </nav>
+        )}
+      </div>
 
       {/* Actions */}
       <div className="flex items-center gap-4">

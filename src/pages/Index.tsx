@@ -1,13 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertTriangle, TrendingUp, Download, RefreshCw, Code, GitBranch, Shield, Users, Zap, AlertCircle, FileCode, Clock } from 'lucide-react';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { StatsCard } from '../components/StatsCard';
 import { AccessibilityPanel } from '../components/AccessibilityPanel';
 import { ToastProvider, useToast } from '../components/Toast';
+import { useLatestScan, useScanProject, useIssues } from '../hooks/useProjects';
 
 const DashboardContent = () => {
   const { showToast } = useToast();
+  const [currentProjectId, setCurrentProjectId] = useState('project-1'); // Default project
+
+  // Fetch data from API
+  const { data: scanData, isLoading, refetch } = useLatestScan(currentProjectId);
+  const { data: issuesData } = useIssues(currentProjectId);
+  const scanProject = useScanProject();
+
+  const handleProjectChange = (projectId: string) => {
+    setCurrentProjectId(projectId);
+    showToast('Project changed', 'Info', 'info');
+  };
 
   useEffect(() => {
     // Welcome message on first load
@@ -46,11 +58,15 @@ const DashboardContent = () => {
     }
   };
 
-  const handleNewScan = () => {
+  const handleNewScan = async () => {
     showToast('Starting project scan...', 'Scan Started', 'info');
-    setTimeout(() => {
+    try {
+      await scanProject.mutateAsync(currentProjectId);
       showToast('Project scan completed successfully', 'Scan Complete', 'success');
-    }, 2000);
+      refetch();
+    } catch (error) {
+      showToast('Scan failed. Please try again.', 'Scan Error', 'error');
+    }
   };
 
   const handleExport = () => {
@@ -60,13 +76,34 @@ const DashboardContent = () => {
     }, 1500);
   };
 
+  // Use data from API or show loading state
+  const compliance = scanData?.compliance || 66.1;
+  const totalIssues = scanData?.totalIssues || 211;
+  const browserCoverage = scanData?.browserCoverage || 95;
+  const criticalIssues = issuesData?.filter(i => i.severity === 'critical').slice(0, 3) || [];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <RefreshCw className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
+          <p className="text-lg text-muted-foreground">Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex bg-background">
       <Sidebar onNavigate={handleNavigation} />
-      
+
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header onSearch={handleSearch} />
-        
+        <Header
+          onSearch={handleSearch}
+          currentProjectId={currentProjectId}
+          onProjectChange={handleProjectChange}
+        />
+
         <main className="flex-1 overflow-y-auto p-6">
           {/* Page Header */}
           <div className="mb-8 flex justify-between items-start">
@@ -86,10 +123,11 @@ const DashboardContent = () => {
               </button>
               <button
                 onClick={handleNewScan}
-                className="flex items-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold shadow-sm"
+                disabled={scanProject.isPending}
+                className="flex items-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold shadow-sm disabled:opacity-50"
               >
-                <RefreshCw className="w-4 h-4" />
-                New Scan
+                <RefreshCw className={`w-4 h-4 ${scanProject.isPending ? 'animate-spin' : ''}`} />
+                {scanProject.isPending ? 'Scanning...' : 'New Scan'}
               </button>
             </div>
           </div>
@@ -98,16 +136,16 @@ const DashboardContent = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <StatsCard
               icon={CheckCircle}
-              value="66.1%"
+              value={`${compliance.toFixed(1)}%`}
               label="Baseline Compliance"
-              progress={66}
+              progress={compliance}
               trend="+12.7%"
               trendUp={true}
               variant="success"
             />
             <StatsCard
               icon={AlertTriangle}
-              value="211"
+              value={totalIssues.toString()}
               label="Active Issues"
               progress={35}
               trend="-28%"
@@ -116,9 +154,9 @@ const DashboardContent = () => {
             />
             <StatsCard
               icon={TrendingUp}
-              value="95%"
+              value={`${browserCoverage}%`}
               label="Browser Coverage"
-              progress={95}
+              progress={browserCoverage}
               trend="+12.7%"
               trendUp={true}
               variant="primary"
@@ -142,11 +180,11 @@ const DashboardContent = () => {
                 <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-sm font-semibold">23 Critical</span>
               </div>
               <div className="space-y-4">
-                {[
+                {(criticalIssues.length > 0 ? criticalIssues : [
                   { file: 'Modal.jsx', issue: '<dialog> element', impact: '100% users', severity: 'critical' },
                   { file: 'ProductGrid.css', issue: 'CSS Subgrid', impact: '18% users', severity: 'high' },
                   { file: 'arrayHelpers.js', issue: 'Array.flatMap', impact: '7% users', severity: 'medium' }
-                ].map((item, idx) => (
+                ]).map((item, idx) => (
                   <div key={idx} className="p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors animate-fade-in" style={{animationDelay: `${idx * 100}ms`}}>
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">

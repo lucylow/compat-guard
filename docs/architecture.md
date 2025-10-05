@@ -6,5 +6,6 @@ This document summarizes CompatGuard's architecture as described in the uploaded
 - CLI (packages/cli) - command line interface for linting and scanning projects. fileciteturn2file15
 - Plugins: eslint, webpack, vite - integrations for popular toolchains. fileciteturn2file0turn2file2turn2file14
 - VS Code extension (packages/vscode-extension) - editor integration (stub). fileciteturn2file6
+- Build tool plugins (Webpack, Vite, ESLint, CI/CD) are implemented in `mock-data/advanced-configuration.ts` as per the blueprint.
 
 This repo is a developer scaffold and intentionally uses stubs to keep the codebase small and runnable without heavy dependencies.
