@@ -72,7 +72,7 @@ Create `compatguard.config.js` in your project root:
 export default {
   baseline: {
     target: 'high', // 'high' (widely available) or 'low' (newly available)
-    year: 2024
+    year: 2025
   },
   frameworks: ['react', 'vue', 'svelte'],
   rules: {
@@ -108,7 +108,7 @@ Add to your `.vscode/settings.json`:
 ```json
 {
   "compatguard.enable": true,
-  "compatguard.targetYear": 2024,
+  "compatguard.targetYear": 2025,
   "compatguard.frameworks": ["react", "vue"],
   "compatguard.showHoverInformation": true
 }
@@ -124,7 +124,7 @@ export default {
   // Baseline Configuration
   baseline: {
     target: 'high',
-    year: 2024,
+    year: 2025,
     browsers: ['chrome >= 90', 'firefox >= 88', 'safari >= 14']
   },
   
@@ -366,7 +366,7 @@ abstract class FrameworkParser {
 import { CompatGuard } from '@compatguard/core';
 
 const guard = new CompatGuard({
-  baseline: { target: 'high', year: 2024 }
+  baseline: { target: 'high', year: 2025 }
 });
 
 // Analyze code
@@ -533,10 +533,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🗺 Roadmap
 
-- [ ] **Angular Framework Support** (Q1 2024)
-- [ ] **Enhanced AI Capabilities** (Q2 2024) 
-- [ ] **Automated Migration PRs** (Q3 2024)
-- [ ] **Enterprise Features** (Q4 2024)
+- [ ] **Angular Framework Support** (Q1 2025)
+- [ ] **Enhanced AI Capabilities** (Q2 2025) 
+- [ ] **Automated Migration PRs** (Q3 2025)
+- [ ] **Enterprise Features** (Q4 2025)
 - [ ] **Plugin Marketplace** (Q1 2025)
 
 ---
