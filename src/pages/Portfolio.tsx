@@ -28,11 +28,11 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-background overflow-x-auto">
+    <div className="min-h-screen w-full bg-background">
       <Header />
       <div className="flex w-full">
         <Sidebar />
-        <main className="flex-1 p-4 md:p-8 ml-0 md:ml-64 w-full">
+        <main className="flex-1 p-4 md:p-8 w-full">
           <div className="max-w-7xl mx-auto w-full">
             <h1 className="text-4xl font-bold text-foreground mb-2">Portfolio Overview</h1>
             <p className="text-muted-foreground mb-8">Cross-project compliance and optimization</p>

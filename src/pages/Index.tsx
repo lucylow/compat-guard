@@ -94,41 +94,42 @@ const DashboardContent = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex bg-background overflow-x-auto">
+    <div className="min-h-screen w-full flex bg-background">
       <Sidebar onNavigate={handleNavigation} />
-      <div className="flex-1 flex flex-col overflow-x-auto">
+      <div className="flex-1 flex flex-col w-full">
         <Header
           onSearch={handleSearch}
           currentProjectId={currentProjectId}
           onProjectChange={handleProjectChange}
         />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 w-full">
-          {/* Page Header */}
-          <div className="mb-8 flex justify-between items-start">
-            <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">Project Dashboard</h1>
-              <p className="text-lg text-muted-foreground">
-                Monitor your project's compatibility status and resolve issues
-              </p>
+          <div className="max-w-7xl mx-auto w-full">
+            {/* Page Header */}
+            <div className="mb-8 flex justify-between items-start">
+              <div>
+                <h1 className="text-4xl font-bold text-foreground mb-2">Project Dashboard</h1>
+                <p className="text-lg text-muted-foreground">
+                  Monitor your project's compatibility status and resolve issues
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleExport}
+                  className="flex items-center gap-2 px-4 py-3 border border-border rounded-lg text-foreground hover:bg-muted transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Export Report
+                </button>
+                <button
+                  onClick={handleNewScan}
+                  disabled={scanProject.isPending}
+                  className="flex items-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold shadow-sm disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${scanProject.isPending ? 'animate-spin' : ''}`} />
+                  {scanProject.isPending ? 'Scanning...' : 'New Scan'}
+                </button>
+              </div>
             </div>
-            <div className="flex gap-3">
-              <button
-                onClick={handleExport}
-                className="flex items-center gap-2 px-4 py-3 border border-border rounded-lg text-foreground hover:bg-muted transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                Export Report
-              </button>
-              <button
-                onClick={handleNewScan}
-                disabled={scanProject.isPending}
-                className="flex items-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold shadow-sm disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${scanProject.isPending ? 'animate-spin' : ''}`} />
-                {scanProject.isPending ? 'Scanning...' : 'New Scan'}
-              </button>
-            </div>
-          </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -320,6 +321,7 @@ const DashboardContent = () => {
                 </div>
               </div>
             ))}
+            </div>
           </div>
         </main>
       </div>
