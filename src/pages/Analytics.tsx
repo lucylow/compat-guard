@@ -6,7 +6,7 @@ import { StatsCard } from '../components/StatsCard';
 import { useAnalytics } from '../hooks/useProjects';
 
 const Analytics = () => {
-  const [currentProjectId] = useState('project-1');
+  const [currentProjectId, setCurrentProjectId] = useState('project-dashboard');
   const { data: analyticsData, isLoading } = useAnalytics(currentProjectId);
 
   if (isLoading) {
@@ -57,7 +57,10 @@ const Analytics = () => {
 
   return (
     <div className="min-h-screen w-full bg-background overflow-x-auto">
-      <Header />
+      <Header
+        currentProjectId={currentProjectId}
+        onProjectChange={setCurrentProjectId}
+      />
       <div className="flex w-full">
         <Sidebar />
         <main className="flex-1 p-4 md:p-8 ml-0 md:ml-64 w-full">

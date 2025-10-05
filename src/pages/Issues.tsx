@@ -5,7 +5,7 @@ import { AlertTriangle, Filter, FileCode, Users, Lightbulb, Code } from 'lucide-
 import { useIssues } from '../hooks/useProjects';
 
 const Issues = () => {
-  const [currentProjectId, setCurrentProjectId] = useState('project-1');
+  const [currentProjectId, setCurrentProjectId] = useState('project-dashboard');
   const [severityFilter, setSeverityFilter] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
 

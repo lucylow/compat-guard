@@ -3,49 +3,140 @@ import { Project, ScanResult, Issue, AnalyticsData } from './api';
 
 export const mockProjects: Project[] = [
   {
-    id: 'project-1',
-    name: 'E-Commerce Platform',
-    path: '/projects/ecommerce',
+    id: 'project-dashboard',
+    name: 'Dashboard',
+    path: '/projects/dashboard',
     lastScan: new Date('2024-01-15T10:30:00Z'),
     compliance: 66.1,
     issues: 211,
     status: 'active'
   },
   {
-    id: 'project-2',
-    name: 'Marketing Website',
-    path: '/projects/marketing',
+    id: 'techshop-pro',
+    name: 'TechShop Pro',
+    path: '/projects/techshop',
+    lastScan: new Date('2024-01-15T10:30:00Z'),
+    compliance: 87.4,
+    issues: 3,
+    status: 'active'
+  },
+  {
+    id: 'growthcorp-landing',
+    name: 'GrowthCorp Landing',
+    path: '/projects/growthcorp',
     lastScan: new Date('2024-01-14T15:20:00Z'),
-    compliance: 84.2,
-    issues: 45,
+    compliance: 92.1,
+    issues: 3,
     status: 'active'
   },
   {
-    id: 'project-3',
-    name: 'Admin Dashboard',
-    path: '/projects/admin',
+    id: 'fittracker-mobile',
+    name: 'FitTracker Mobile',
+    path: '/projects/fittracker',
     lastScan: new Date('2024-01-13T09:15:00Z'),
-    compliance: 58.9,
-    issues: 342,
+    compliance: 79.5,
+    issues: 3,
     status: 'active'
+  }
+];
+
+// Platform-specific issues
+const techshopIssues: Issue[] = [
+  {
+    id: 'ECOM-001',
+    file: 'src/components/ProductGrid.jsx',
+    issue: 'CSS Container Queries - newly available baseline feature',
+    severity: 'medium',
+    impact: 'Affects 25% of users on older browsers',
+    line: 45,
+    suggestion: 'Add @container fallback using @supports for browsers without container query support',
+    category: 'css'
   },
   {
-    id: 'project-4',
-    name: 'Mobile Web App',
-    path: '/projects/mobile',
-    lastScan: new Date('2024-01-15T11:45:00Z'),
-    compliance: 91.5,
-    issues: 23,
-    status: 'active'
+    id: 'ECOM-002',
+    file: 'src/hooks/useInfiniteScroll.js',
+    issue: 'IntersectionObserver - widely available, no action needed',
+    severity: 'low',
+    impact: 'Minimal impact - 98% browser support',
+    line: 12,
+    suggestion: 'Already using polyfill, no changes needed',
+    category: 'webApi'
   },
   {
-    id: 'project-5',
-    name: 'Customer Portal',
-    path: '/projects/portal',
-    lastScan: new Date('2024-01-12T14:30:00Z'),
-    compliance: 72.3,
-    issues: 156,
-    status: 'active'
+    id: 'ECOM-003',
+    file: 'src/styles/checkout.css',
+    issue: 'CSS :has() selector - limited availability',
+    severity: 'critical',
+    impact: 'Affects checkout conversion - 30% of users',
+    line: 156,
+    suggestion: 'Use JavaScript-based solution or wait for wider support. Critical for conversion optimization.',
+    category: 'css'
+  }
+];
+
+const growthcorpIssues: Issue[] = [
+  {
+    id: 'MKTG-001',
+    file: 'components/HeroCarousel.vue',
+    issue: 'CSS Scroll Snap - widely available',
+    severity: 'low',
+    impact: 'Minimal - 95% browser support',
+    line: 78,
+    suggestion: 'Current implementation is safe for production',
+    category: 'css'
+  },
+  {
+    id: 'MKTG-002',
+    file: 'layouts/testimonials.vue',
+    issue: 'CSS Grid subgrid - limited availability',
+    severity: 'critical',
+    impact: 'Layout breaks for 35% of Safari users',
+    line: 234,
+    suggestion: 'Use nested CSS Grid with explicit sizing as fallback',
+    category: 'css'
+  },
+  {
+    id: 'MKTG-003',
+    file: 'composables/useScrollAnimations.js',
+    issue: 'Web Animations API - newly available',
+    severity: 'medium',
+    impact: 'Animations fail for 15% of users',
+    line: 89,
+    suggestion: 'Add CSS-based fallback animations for unsupported browsers',
+    category: 'webApi'
+  }
+];
+
+const fittrackerIssues: Issue[] = [
+  {
+    id: 'MOB-001',
+    file: 'src/components/ModalOverlay.jsx',
+    issue: 'CSS backdrop-filter - newly available',
+    severity: 'medium',
+    impact: 'Visual degradation on older mobile devices',
+    line: 45,
+    suggestion: 'Use solid background as fallback for older devices',
+    category: 'css'
+  },
+  {
+    id: 'MOB-002',
+    file: 'src/utils/shareWorkout.js',
+    issue: 'Web Share API - limited availability',
+    severity: 'critical',
+    impact: 'Core sharing functionality unavailable for 40% of users',
+    line: 123,
+    suggestion: 'Implement manual share options (copy link, social media buttons) as fallback',
+    category: 'webApi'
+  },
+  {
+    id: 'MOB-003',
+    file: 'src/styles/safeArea.css',
+    issue: 'CSS env() function for safe areas - widely available',
+    severity: 'low',
+    impact: 'Well supported on modern mobile devices',
+    line: 12,
+    suggestion: 'Current implementation is production-ready',
+    category: 'css'
   }
 ];
 
@@ -283,8 +374,8 @@ export const mockIssues: Issue[] = [
 ];
 
 export const mockScanResults: Record<string, ScanResult> = {
-  'project-1': {
-    projectId: 'project-1',
+  'project-dashboard': {
+    projectId: 'project-dashboard',
     timestamp: new Date('2024-01-15T10:30:00Z'),
     compliance: 66.1,
     totalIssues: 211,
@@ -313,34 +404,94 @@ export const mockScanResults: Record<string, ScanResult> = {
       { name: 'Samsung Internet', coverage: 82, color: 'bg-secondary/70' }
     ]
   },
-  'project-2': {
-    projectId: 'project-2',
-    timestamp: new Date('2024-01-14T15:20:00Z'),
-    compliance: 84.2,
-    totalIssues: 45,
-    criticalIssues: 5,
-    browserCoverage: 98,
-    avgFixTime: 12,
+  'techshop-pro': {
+    projectId: 'techshop-pro',
+    timestamp: new Date('2024-01-15T10:30:00Z'),
+    compliance: 87.4,
+    totalIssues: 3,
+    criticalIssues: 1,
+    browserCoverage: 92,
+    avgFixTime: 4,
     categories: {
-      css: { total: 78, issues: 23 },
-      javascript: { total: 156, issues: 12 },
-      html: { total: 34, issues: 4 },
-      webApi: { total: 67, issues: 6 }
+      css: { total: 450, issues: 2 },
+      javascript: { total: 680, issues: 0 },
+      html: { total: 125, issues: 0 },
+      webApi: { total: 89, issues: 1 }
     },
-    issues: mockIssues.slice(5, 10),
+    issues: techshopIssues,
     complianceHistory: [
-      { month: 'Sep', score: 72 },
-      { month: 'Oct', score: 76 },
-      { month: 'Nov', score: 79 },
-      { month: 'Dec', score: 82 },
-      { month: 'Jan', score: 84 }
+      { month: 'Sep', score: 78 },
+      { month: 'Oct', score: 81 },
+      { month: 'Nov', score: 84 },
+      { month: 'Dec', score: 86 },
+      { month: 'Jan', score: 87 }
+    ],
+    browserBreakdown: [
+      { name: 'Chrome', coverage: 98, color: 'bg-primary' },
+      { name: 'Firefox', coverage: 95, color: 'bg-secondary' },
+      { name: 'Safari', coverage: 82, color: 'bg-accent' },
+      { name: 'Edge', coverage: 97, color: 'bg-primary/70' },
+      { name: 'Samsung Internet', coverage: 88, color: 'bg-secondary/70' }
+    ]
+  },
+  'growthcorp-landing': {
+    projectId: 'growthcorp-landing',
+    timestamp: new Date('2024-01-14T15:20:00Z'),
+    compliance: 92.1,
+    totalIssues: 3,
+    criticalIssues: 1,
+    browserCoverage: 95,
+    avgFixTime: 3,
+    categories: {
+      css: { total: 280, issues: 2 },
+      javascript: { total: 340, issues: 0 },
+      html: { total: 95, issues: 0 },
+      webApi: { total: 45, issues: 1 }
+    },
+    issues: growthcorpIssues,
+    complianceHistory: [
+      { month: 'Sep', score: 85 },
+      { month: 'Oct', score: 87 },
+      { month: 'Nov', score: 89 },
+      { month: 'Dec', score: 91 },
+      { month: 'Jan', score: 92 }
     ],
     browserBreakdown: [
       { name: 'Chrome', coverage: 99, color: 'bg-primary' },
-      { name: 'Firefox', coverage: 98, color: 'bg-secondary' },
-      { name: 'Safari', coverage: 96, color: 'bg-accent' },
-      { name: 'Edge', coverage: 99, color: 'bg-primary/70' },
-      { name: 'Samsung Internet', coverage: 94, color: 'bg-secondary/70' }
+      { name: 'Firefox', coverage: 97, color: 'bg-secondary' },
+      { name: 'Safari', coverage: 91, color: 'bg-accent' },
+      { name: 'Edge', coverage: 98, color: 'bg-primary/70' },
+      { name: 'Samsung Internet', coverage: 89, color: 'bg-secondary/70' }
+    ]
+  },
+  'fittracker-mobile': {
+    projectId: 'fittracker-mobile',
+    timestamp: new Date('2024-01-13T09:15:00Z'),
+    compliance: 79.5,
+    totalIssues: 3,
+    criticalIssues: 1,
+    browserCoverage: 88,
+    avgFixTime: 5,
+    categories: {
+      css: { total: 320, issues: 1 },
+      javascript: { total: 520, issues: 0 },
+      html: { total: 110, issues: 0 },
+      webApi: { total: 78, issues: 2 }
+    },
+    issues: fittrackerIssues,
+    complianceHistory: [
+      { month: 'Sep', score: 72 },
+      { month: 'Oct', score: 74 },
+      { month: 'Nov', score: 76 },
+      { month: 'Dec', score: 78 },
+      { month: 'Jan', score: 79 }
+    ],
+    browserBreakdown: [
+      { name: 'Chrome', coverage: 96, color: 'bg-primary' },
+      { name: 'Firefox', coverage: 92, color: 'bg-secondary' },
+      { name: 'Safari', coverage: 75, color: 'bg-accent' },
+      { name: 'Edge', coverage: 94, color: 'bg-primary/70' },
+      { name: 'Samsung Internet', coverage: 83, color: 'bg-secondary/70' }
     ]
   }
 };
@@ -425,7 +576,22 @@ export function getIssuesByFilter(projectId: string, filters?: {
   severity?: string;
   category?: string;
 }): Issue[] {
-  let issues = [...mockIssues];
+  // Select issues based on project
+  let issues: Issue[] = [];
+
+  switch (projectId) {
+    case 'techshop-pro':
+      issues = [...techshopIssues];
+      break;
+    case 'growthcorp-landing':
+      issues = [...growthcorpIssues];
+      break;
+    case 'fittracker-mobile':
+      issues = [...fittrackerIssues];
+      break;
+    default:
+      issues = [...mockIssues];
+  }
 
   if (filters?.severity) {
     issues = issues.filter(i => i.severity === filters.severity);

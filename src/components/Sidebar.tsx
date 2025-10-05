@@ -47,20 +47,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
         </button>
       </div>
 
-      {/* Project Selector */}
-      {!collapsed && (
-        <div className="p-4 border-b border-border">
-          <select 
-            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground text-sm cursor-pointer hover:border-primary transition-colors"
-            aria-label="Select project"
-          >
-            <option>E-Commerce Platform</option>
-            <option>Marketing Website</option>
-            <option>Admin Dashboard</option>
-            <option>Mobile App</option>
-          </select>
-        </div>
-      )}
+      {/* Project Selector - Hidden, using Header selector instead */}
 
       {/* Navigation */}
       <nav className="flex-1 py-4 overflow-x-visible">

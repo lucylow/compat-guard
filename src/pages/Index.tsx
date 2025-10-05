@@ -9,7 +9,7 @@ import { useLatestScan, useScanProject, useIssues } from '../hooks/useProjects';
 
 const DashboardContent = () => {
   const { showToast } = useToast();
-  const [currentProjectId, setCurrentProjectId] = useState('project-1'); // Default project
+  const [currentProjectId, setCurrentProjectId] = useState('project-dashboard'); // Default project
 
   // Fetch data from API
   const { data: scanData, isLoading, refetch } = useLatestScan(currentProjectId);
