@@ -38,7 +38,7 @@ export interface Issue {
   impact: string;
   line?: number;
   suggestion?: string;
-  category: 'css' | 'javascript' | 'html' | 'webApi';
+  category: string; // Fix: allow any string for category to match mock data
 }
 
 export interface ComplianceDataPoint {
