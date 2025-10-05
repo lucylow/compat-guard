@@ -355,7 +355,23 @@ export class CompatGuardLinter {
 }
 
 // Export all classes
-// (Already exported above)
+export {
+  IDEPlugin,
+  LSPServer,
+  ESLintPlugin,
+  BuildPlugins,
+  BaselineMigrationMode,
+  TeamComplianceDashboard,
+  PolyfillIntelligence,
+  BaselineService,
+  BaselineRule,
+  CSSBaselineRule,
+  CompatGuardLinter,
+  WebpackBaselinePlugin,
+  viteBaselinePlugin,
+  baselineESLintPlugin,
+  runBaselineLinterCLI
+};
 
 // Utility function for quick linting
 export async function createLinter(targetBaseline = '2024', options = {}) {
