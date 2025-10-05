@@ -229,7 +229,7 @@ export const mockIssues: Issue[] = [
     impact: '10% users',
     line: 78,
     suggestion: 'Use formdata-polyfill or manual form serialization',
-    category: 'javascript'
+    category: 'javascript' // Fix: should be 'javascript' not 'html'
   },
   {
     id: 'issue-10',
