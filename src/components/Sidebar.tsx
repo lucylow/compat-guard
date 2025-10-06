@@ -23,7 +23,6 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
     { icon: FolderTree, label: 'Portfolio', path: '/portfolio' },
     { icon: BarChart3, label: 'Analytics', path: '/analytics' },
     { icon: Sparkles, label: 'AI Insights', path: '/insights' },
-    { icon: Compass, label: 'Baseline Explorer', path: '/baseline-explorer' },
     { icon: AlertTriangle, label: 'Issues', badge: 23, path: '/issues' },
     { icon: Settings, label: 'Settings', path: '/settings' },
     { icon: HelpCircle, label: 'Help & Support', path: '/help' },

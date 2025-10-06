@@ -12,7 +12,6 @@ import Portfolio from './pages/Portfolio';
 import Issues from './pages/Issues';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
-import BaselineExplorer from './pages/BaselineExplorer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 
@@ -40,7 +39,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/issues" element={<Issues />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/help" element={<Help />} />
-            <Route path="/baseline-explorer" element={<BaselineExplorer />} />
           </Routes>
           <Toaster position="top-center" richColors />
         </BrowserRouter>
